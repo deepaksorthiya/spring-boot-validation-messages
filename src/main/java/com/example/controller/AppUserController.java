@@ -1,7 +1,8 @@
-package com.example.users.rest;
+package com.example.controller;
 
-import com.example.users.model.AppUser;
-import com.example.users.repo.AppUserRepository;
+import com.example.global.exceptions.ResourceNotFoundException;
+import com.example.model.AppUser;
+import com.example.repository.AppUserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.module.ResolutionException;
 import java.util.Map;
 
 @RestController
@@ -33,7 +35,7 @@ public class AppUserController {
 
     @GetMapping(value = "{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppUser> getUser(@PathVariable long userId, @RequestHeader HttpHeaders httpHeaders) {
-        return new ResponseEntity<>(appUserRepository.findById(userId).get(), HttpStatus.OK);
+        return new ResponseEntity<>(appUserRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found.")), HttpStatus.OK);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

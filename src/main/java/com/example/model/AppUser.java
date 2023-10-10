@@ -1,5 +1,6 @@
-package com.example.users.model;
+package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +22,7 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @Email(message = "email should be in proper form")
-    @NotEmpty(message = "{name.not.empty}")
+    @Email(message = "{email.not.valid}")
     @NotBlank(message = "{name.not.empty}")
     private String email;
 
@@ -31,4 +31,7 @@ public class AppUser {
 
     @NotBlank(message = "Last name should not be blank")
     private String lastName;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 }

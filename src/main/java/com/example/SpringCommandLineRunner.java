@@ -1,7 +1,7 @@
 package com.example;
 
-import com.example.users.model.AppUser;
-import com.example.users.repo.AppUserRepository;
+import com.example.model.AppUser;
+import com.example.repository.AppUserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +20,12 @@ import java.util.Map;
 public class SpringCommandLineRunner implements CommandLineRunner {
 
     private final AppUserRepository appUserRepository;
-    private final RequestMappingInfoHandlerMapping requestMappingInfoHandlerMapping;
+    private final List<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMapping;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public SpringCommandLineRunner(AppUserRepository appUserRepository, RequestMappingInfoHandlerMapping requestMappingInfoHandlerMapping) {
+    public SpringCommandLineRunner(AppUserRepository appUserRepository, List<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMapping) {
         this.appUserRepository = appUserRepository;
         this.requestMappingInfoHandlerMapping = requestMappingInfoHandlerMapping;
     }
@@ -35,19 +35,17 @@ public class SpringCommandLineRunner implements CommandLineRunner {
 
         log.info("Entity Manager : {} ", entityManager);
 
-        Map<RequestMappingInfo, HandlerMethod> handlersMethod = requestMappingInfoHandlerMapping.getHandlerMethods();
-
-        handlersMethod.forEach((key, value) -> log.info(key.getPathPatternsCondition().getPatternValues() + " : " + key.getMethodsCondition().getMethods()));
+        Map<RequestMappingInfo, HandlerMethod> handlersMethod = requestMappingInfoHandlerMapping.get(3).getHandlerMethods();
 
         for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlersMethod.entrySet()) {
-            System.out.println(entry.getKey());
+            log.info(entry.getKey() + " : " + entry.getValue());
         }
 
         List<AppUser> appUserList = new ArrayList<>();
 
         for (int i = 0; i < 26; i++) {
             char c = (char) (i + 97);
-            AppUser appUser = new AppUser(0, c + "@gmail.com", c + "", c + "");
+            AppUser appUser = new AppUser(0, c + "@gmail.com", c + "", c + "", "ee");
             appUserList.add(appUser);
         }
         List<AppUser> saveAppUserList = appUserRepository.saveAll(appUserList);
