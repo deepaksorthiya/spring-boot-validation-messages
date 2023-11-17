@@ -22,14 +22,14 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @Email(message = "{email.not.valid}")
-    @NotBlank(message = "{name.not.empty}")
+    @Email(message = "{appuser.email.not.valid}")
+    @NotBlank(message = "{appuser.email.not.empty}")
     private String email;
 
-    @NotBlank(message = "First name should not be blank")
+    @NotBlank(message = "{appuser.fname.not.empty}")
     private String firstName;
 
-    @NotBlank(message = "Last name should not be blank")
+    @NotBlank(message = "{appuser.lname.not.empty}")
     private String lastName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
