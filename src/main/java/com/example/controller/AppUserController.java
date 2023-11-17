@@ -4,7 +4,6 @@ import com.example.global.exceptions.ResourceNotFoundException;
 import com.example.model.AppUser;
 import com.example.repository.AppUserRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.module.ResolutionException;
 import java.util.Map;
 
 @RestController
@@ -29,7 +28,7 @@ public class AppUserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppUser> save(@RequestBody @Valid AppUser appUser, @RequestHeader HttpHeaders httpHeaders) {
+    public ResponseEntity<AppUser> save(@RequestBody @Validated AppUser appUser, @RequestHeader HttpHeaders httpHeaders) {
         return new ResponseEntity<>(appUserRepository.save(appUser), HttpStatus.CREATED);
     }
 
